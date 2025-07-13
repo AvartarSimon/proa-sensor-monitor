@@ -2,10 +2,10 @@ import * as echarts from "echarts";
 import ReactECharts from "echarts-for-react";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  api,
+  sensorDataApi,
   type TemperatureData,
   type TemperatureStats,
-} from "../services/api";
+} from "../../../services/sensorDataApi";
 
 type DataPoint = {
   time: number; // Unix timestamp
@@ -42,10 +42,10 @@ const TemperatureDashboard: React.FC = () => {
       setError(null);
 
       // Get temperature data with timescale
-      const response = await api.getTemperatures(timescale, "raw");
+      const response = await sensorDataApi.getTemperatures(timescale, "raw");
 
       // Transform API data to chart format
-      const chartData: DataPoint[] = response.data.map(
+      const chartData: DataPoint[] = response?.data?.map(
         (item: TemperatureData) => ({
           time: new Date(item.timestamp).getTime(),
           value: item.value,
@@ -64,7 +64,7 @@ const TemperatureDashboard: React.FC = () => {
   // Fetch temperature statistics
   const fetchTemperatureStats = async (timescale: string = "1h") => {
     try {
-      const statsResponse = await api.getTemperatureStats(timescale);
+      const statsResponse = await sensorDataApi.getTemperatureStats(timescale);
       setStats(statsResponse);
     } catch (err) {
       console.error("Error fetching temperature stats:", err);
@@ -122,8 +122,8 @@ const TemperatureDashboard: React.FC = () => {
     yAxis: {
       type: "value",
       name: "°C",
-      min: stats ? Math.floor(stats?.stats?.minTemperature - 2) : "dataMin",
-      max: stats ? Math.ceil(stats?.stats?.maxTemperature + 2) : "dataMax",
+      min: stats ? Math.floor(stats.stats?.minTemperature - 2) : "dataMin",
+      max: stats ? Math.ceil(stats.stats?.maxTemperature + 2) : "dataMax",
     },
     dataZoom: [
       {
@@ -148,12 +148,12 @@ const TemperatureDashboard: React.FC = () => {
         areaStyle: {
           opacity: 0.3,
         },
-        data: data.map((d) => [d.time, d.value]),
+        data: data?.map((d) => [d.time, d.value]),
       },
     ],
   };
 
-  if (loading && data?.length === 0) {
+  if (loading && data.length === 0) {
     return (
       <div className="dashboard-loading">
         <div className="loading-spinner"></div>
@@ -180,7 +180,7 @@ const TemperatureDashboard: React.FC = () => {
     );
   }
 
-  return (
+  return data?.length > 0 ? (
     <div className="temperature-dashboard">
       {/* Header with Timescale Selector */}
       <div className="dashboard-header">
@@ -209,8 +209,8 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-content">
               <div className="stat-label">Average</div>
               <div className="stat-value">
-                {stats.stats?.averageTemperature?.toFixed(1)}°C
-              </div>?
+                {stats.stats.averageTemperature.toFixed(1)}°C
+              </div>
             </div>
           </div>
 
@@ -219,7 +219,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-content">
               <div className="stat-label">Minimum</div>
               <div className="stat-value">
-                {stats.stats.minTemperature?.toFixed(1)}°C
+                {stats.stats.minTemperature.toFixed(1)}°C
               </div>
             </div>
           </div>
@@ -229,7 +229,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-content">
               <div className="stat-label">Maximum</div>
               <div className="stat-value">
-                {stats.stats?.maxTemperature?.toFixed(1)}°C
+                {stats.stats.maxTemperature.toFixed(1)}°C
               </div>
             </div>
           </div>
@@ -239,7 +239,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-content">
               <div className="stat-label">Range</div>
               <div className="stat-value">
-                {stats.stats?.temperatureRange?.toFixed(1)}°C
+                {stats.stats.temperatureRange.toFixed(1)}°C
               </div>
             </div>
           </div>
@@ -248,7 +248,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-icon">🔢</div>
             <div className="stat-content">
               <div className="stat-label">Readings</div>
-              <div className="stat-value">{stats.stats?.totalReadings}</div>
+              <div className="stat-value">{stats.stats.totalReadings}</div>
             </div>
           </div>
 
@@ -276,11 +276,11 @@ const TemperatureDashboard: React.FC = () => {
           <div className="summary-grid">
             <div className="summary-item">
               <strong>First Reading:</strong>{" "}
-              {new Date(stats?.stats?.firstReading).toLocaleString()}
+              {new Date(stats.stats.firstReading).toLocaleString()}
             </div>
             <div className="summary-item">
               <strong>Last Reading:</strong>{" "}
-              {new Date(stats?.stats?.lastReading).toLocaleString()}
+              {new Date(stats.stats.lastReading).toLocaleString()}
             </div>
             <div className="summary-item">
               <strong>Time Range:</strong> {selectedTimescale}
@@ -292,6 +292,8 @@ const TemperatureDashboard: React.FC = () => {
         </div>
       )}
     </div>
+  ) : (
+    <div>No data available</div>
   );
 };
 
