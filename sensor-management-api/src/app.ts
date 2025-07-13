@@ -1,10 +1,15 @@
 import express from "express";
 import bodyParser from "body-parser";
+import { getPrismaClient } from "./config/prisma";
 import { getAppConfig } from "./config/app";
 import { corsMiddleware } from "./middleware/cors";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
+import { TemperatureRepository } from "./repositories/temperatureRepository";
+import { TemperatureService } from "./services/temperatureService";
 import { SensorService } from "./services/sensorService";
+import { TemperatureController } from "./controllers/temperatureController";
 import { SensorController } from "./controllers/sensorController";
+import { createTemperatureRoutes } from "./routes/temperatureRoutes";
 import { createSensorRoutes } from "./routes/sensorRoutes";
 import { HttpClient } from "./utils/httpClient";
 
@@ -26,13 +31,20 @@ export class App {
   }
 
   private initializeRoutes(): void {
+    const prisma = getPrismaClient();
     const httpClient = new HttpClient(getAppConfig().modbusSensorControlUrl);
 
+    const temperatureRepository = new TemperatureRepository(prisma);
+    const temperatureService = new TemperatureService(temperatureRepository);
     const sensorService = new SensorService(httpClient);
+
+    const temperatureController = new TemperatureController(temperatureService);
     const sensorController = new SensorController(sensorService);
 
+    const temperatureRoutes = createTemperatureRoutes(temperatureController);
     const sensorRoutes = createSensorRoutes(sensorController);
 
+    this.app.use("/api/temperatures", temperatureRoutes);
     this.app.use("/sensor", sensorRoutes);
 
     this.app.get("/health", (_req, res) => {
