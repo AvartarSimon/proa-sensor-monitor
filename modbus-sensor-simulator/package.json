@@ -1,9 +1,9 @@
 {
   "name": "modbus-sensor-simulator",
   "version": "1.0.0",
-  "main": "src/sensor.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node ./src/sensor.ts",
+    "start": "ts-node ./src/index.ts",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\""

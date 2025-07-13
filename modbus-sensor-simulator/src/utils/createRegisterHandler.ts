@@ -1,8 +1,8 @@
-import { SensorState } from "../types/state";
-import { generateTemperature } from "../core/temperature";
-import { updateStateFromRegister } from "../core/stateMachine";
+import { SensorState } from "./sensorState";
+import { generateTemperature } from "./generateTemperature";
+import { updateRegisterState } from "./updateRegisterState";
 
-export const createVectorHandlers = (
+export const createRegisterHandler = (
   getState: () => SensorState,
   setState: (newState: SensorState) => void,
 ) => ({
@@ -23,7 +23,7 @@ export const createVectorHandlers = (
   },
   setRegister: (addr: number, value: number): void => {
     const state = getState();
-    const newState = updateStateFromRegister(state, addr, value);
+    const newState = updateRegisterState(state, addr, value);
     setState(newState);
     console.log(`Register ${addr} updated to: ${value}`);
   },

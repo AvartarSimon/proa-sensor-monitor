@@ -1,8 +1,7 @@
 import { ServerTCP } from "modbus-serial";
 import dotenv from "dotenv";
-import { initialState } from "./types/state";
-import { updateState } from "./core/stateMachine";
-import { createVectorHandlers } from "./modbus/handler";
+import { createRegisterHandler } from "./utils/createRegisterHandler";
+import { updateState, initialState } from "./utils/sensorState";
 
 dotenv.config();
 
@@ -20,7 +19,7 @@ const updateSensorState = () => {
 
 updateSensorState();
 
-const vectorHandlers = createVectorHandlers(getState, setState);
+const vectorHandlers = createRegisterHandler(getState, setState);
 
 new ServerTCP(vectorHandlers, {
   host: process.env.MODBUS_HOST || "0.0.0.0",

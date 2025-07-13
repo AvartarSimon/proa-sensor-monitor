@@ -1,4 +1,4 @@
-import { SensorState } from "../types/state";
+import { SensorState } from "./sensorState";
 
 export const generateTemperature = (state: SensorState): number => {
   const baseTemp = 25;
