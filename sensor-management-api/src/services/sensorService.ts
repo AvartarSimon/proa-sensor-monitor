@@ -1,35 +1,38 @@
 import { HttpClient } from "../utils/httpClient";
 import { TemperatureValidator } from "../validators/temperature";
-import { SensorStatus, ControlResponse } from "./types";
+import { ControlResponse } from "./types";
 
 export class SensorService {
   constructor(private httpClient: HttpClient) {}
 
-  async getSensorStatus(): Promise<SensorStatus> {
+  async getSensorStatus(): Promise<any> {
     try {
-      const status = {
-        connection: {
-          isConnected: true,
-          lastFailureTime: null,
-          lastFailureMessage: null,
-        },
-      };
+      const status = await this.httpClient.get<any>("/sensor/status");
 
       return {
-        timestamp: new Date().toISOString(),
-        sensor: {
-          status: status.connection?.isConnected ? "connected" : "disconnected",
-          lastFailureTime: status.connection?.lastFailureTime || null,
-          lastFailureMessage: status.connection?.lastFailureMessage || null,
+        period: status.period,
+        amplitude: status.amplitude,
+        running: status.running,
+        baseTemperature: status.baseTemperature,
+        timestamp: status.timestamp,
+        sensorConnection: {
+          isConnected: status.sensorConnection?.isConnected || false,
+          lastFailureTime: status.sensorConnection?.lastFailureTime || null,
+          lastFailureMessage:
+            status.sensorConnection?.lastFailureMessage || null,
         },
       };
     } catch (error) {
       console.error("Error getting sensor status:", error);
 
       return {
+        period: 0,
+        amplitude: 0,
+        running: false,
+        baseTemperature: 25,
         timestamp: new Date().toISOString(),
-        sensor: {
-          status: "disconnected",
+        sensorConnection: {
+          isConnected: false,
           lastFailureTime: new Date().toISOString(),
           lastFailureMessage:
             error instanceof Error ? error.message : "Unknown error",
@@ -47,11 +50,11 @@ export class SensorService {
         throw new Error("No valid control parameters provided");
       }
 
-      console.log("control sensor TODO: implement");
+      await this.httpClient.post("/sensor/control", validParams);
 
       return {
         success: true,
-        controls: validParams,
+        message: "Control commands sent successfully",
       };
     } catch (error) {
       console.error("Error controlling sensor:", error);
