@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import configPrettier from 'eslint-config-prettier';
 import pluginPrettier from 'eslint-plugin-prettier';
 import pluginReact from 'eslint-plugin-react';
 import { defineConfig } from 'eslint/config';
@@ -14,7 +15,7 @@ export default defineConfig([
     },
     extends: ['js/recommended'],
     rules: {
-      'prettier/prettier': 'warn', // Optional: Show prettier errors in ESLint
+      'prettier/prettier': 'warn', // Enforce .prettierrc
     },
   },
   {
@@ -38,9 +39,12 @@ export default defineConfig([
   },
   {
     rules: {
-      // Disable ESLint formatting conflicting with Prettier
       'arrow-body-style': 'off',
       'prefer-arrow-callback': 'off',
     },
   },
+  configPrettier, // Add as last step to disable conflicting rules
 ]);
+
+
+

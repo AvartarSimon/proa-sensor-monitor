@@ -13,11 +13,11 @@ export default function Center() {
           />
         </div>
 
-        {/* Proa-Ede Temperature Monitor */}
+        {/* Proa-MetEdge Temperature Monitor */}
         <div className="proa-monitor">
           <div className="monitor-body">
             <div className="monitor-screen">
-              <div className="monitor-title">Proa-Ede</div>
+              <div className="monitor-title">Proa-MetEdge</div>
               <div className="temperature-display">
                 <span className="temp-value">24.5</span>
                 <span className="temp-unit">°C</span>

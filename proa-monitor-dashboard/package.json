@@ -11,8 +11,17 @@
     "format": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
+    "ahooks": "^3.9.0",
+    "antd": "^4.21.5",
+    "echarts": "5.2.0",
+    "echarts-for-react": "^3.0.2",
+    "echarts-gl": "2.0.8",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
