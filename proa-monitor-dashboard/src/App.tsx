@@ -5,13 +5,13 @@ import TemperatureDashboard from "./pages/Home/left/TemperatureDashboard";
 
 function App() {
   return (
-    <div className="app1">
-      <header className="app-header1">
-        <h1>Modbus Sensor Simulator Dashboard</h1>
+    <div className="app">
+      <header className="app-header">
+        <h1>Proa Monitor Dashboard</h1>
         <p>Real-time temperature monitoring and control</p>
       </header>
 
-      <main className="app-main1">
+      <main className="app-main">
         <div className="dashboard-grid">
           {/* Temperature Dashboard Section */}
           <section className="chart-section">
@@ -27,11 +27,6 @@ function App() {
         </section>
       </main>
 
-      <footer className="app-footer">
-        <p>
-          Modbus Sensor Simulator - Built with React, ECharts, and TypeScript
-        </p>
-      </footer>
     </div>
   );
 }
