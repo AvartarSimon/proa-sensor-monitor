@@ -168,7 +168,7 @@ export default function Block1() {
         <div
           className="block1__chart"
           style={{ height: toAdaptedPx(450), position: 'relative' }}>
-          {humidityData.length > 0 && (
+          {humidityData?.length > 0 && (
             <ReactECharts
               key="right-block1-chart"
               option={getOption()}

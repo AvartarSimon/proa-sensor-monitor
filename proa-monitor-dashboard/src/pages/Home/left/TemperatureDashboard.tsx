@@ -1,8 +1,12 @@
 import * as echarts from "echarts";
 import ReactECharts from "echarts-for-react";
 import React, { useEffect, useRef, useState } from "react";
-import { getTemperatureStats, getTemperatures } from "../../../services";
-import type { TemperatureData, TemperatureStats } from "../../../services/types";
+import {
+  api,
+  type TemperatureData,
+  type TemperatureStats,
+} from "../services/api";
+
 type DataPoint = {
   time: number; // Unix timestamp
   value: number;
@@ -38,10 +42,10 @@ const TemperatureDashboard: React.FC = () => {
       setError(null);
 
       // Get temperature data with timescale
-      const response = await getTemperatures(timescale, "raw");
+      const response = await api.getTemperatures(timescale, "raw");
 
       // Transform API data to chart format
-      const chartData: DataPoint[] = response?.data?.map(
+      const chartData: DataPoint[] = response.data.map(
         (item: TemperatureData) => ({
           time: new Date(item.timestamp).getTime(),
           value: item.value,
@@ -60,7 +64,7 @@ const TemperatureDashboard: React.FC = () => {
   // Fetch temperature statistics
   const fetchTemperatureStats = async (timescale: string = "1h") => {
     try {
-      const statsResponse = await getTemperatureStats(timescale);
+      const statsResponse = await api.getTemperatureStats(timescale);
       setStats(statsResponse);
     } catch (err) {
       console.error("Error fetching temperature stats:", err);
@@ -144,7 +148,7 @@ const TemperatureDashboard: React.FC = () => {
         areaStyle: {
           opacity: 0.3,
         },
-        data: data?.map((d) => [d.time, d.value]),
+        data: data.map((d) => [d.time, d.value]),
       },
     ],
   };
@@ -188,7 +192,7 @@ const TemperatureDashboard: React.FC = () => {
             value={selectedTimescale}
             onChange={(e) => handleTimescaleChange(e.target.value)}
           >
-            {TIMESCALES?.map((timescale) => (
+            {TIMESCALES.map((timescale) => (
               <option key={timescale.value} value={timescale.value}>
                 {timescale.label}
               </option>
@@ -206,7 +210,7 @@ const TemperatureDashboard: React.FC = () => {
               <div className="stat-label">Average</div>
               <div className="stat-value">
                 {stats.stats?.averageTemperature?.toFixed(1)}°C
-              </div>
+              </div>?
             </div>
           </div>
 
@@ -215,7 +219,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-content">
               <div className="stat-label">Minimum</div>
               <div className="stat-value">
-                {stats.stats?.minTemperature?.toFixed(1)}°C
+                {stats.stats.minTemperature?.toFixed(1)}°C
               </div>
             </div>
           </div>
@@ -253,7 +257,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-content">
               <div className="stat-label">Std Dev</div>
               <div className="stat-value">
-                {stats.stats?.standardDeviation?.toFixed(2)}°C
+                {stats.stats.standardDeviation.toFixed(2)}°C
               </div>
             </div>
           </div>
@@ -282,7 +286,7 @@ const TemperatureDashboard: React.FC = () => {
               <strong>Time Range:</strong> {selectedTimescale}
             </div>
             <div className="summary-item">
-              <strong>Data Points:</strong> {data?.length}
+              <strong>Data Points:</strong> {data.length}
             </div>
           </div>
         </div>

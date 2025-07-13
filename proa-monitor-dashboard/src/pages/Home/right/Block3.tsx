@@ -85,7 +85,7 @@ export default function Block3() {
           )}
           
           {/* Chart */}
-          {data.length === 0 ? (
+          {data?.length === 0 ? (
             <div className="block3__loading">Loading...</div>
           ) : (
             <div className="block3__chart">
@@ -125,7 +125,7 @@ export default function Block3() {
 }
 
 function getChart(data: TemperatureHumidityComparisonData[]): ECOption {
-  if (data.length === 0) {
+  if (data?.length === 0) {
     return {
       xAxis: { type: 'category', data: ['No Data'] },
       yAxis: { type: 'value' },
