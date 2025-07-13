@@ -54,17 +54,7 @@ export interface SensorControlParams {
   amplitude?: number;
   status?: boolean;
 }
-
-export interface SensorStatus {
-  timestamp: string;
-  sensor: {
-    status: "connected" | "disconnected";
-    lastFailureTime: string | null;
-    lastFailureMessage: string | null;
-  };
-}
-
 export interface ControlResponse {
   success: boolean;
-  controls: SensorControlParams;
+  message: string;
 }

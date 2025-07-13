@@ -15,6 +15,26 @@ services:
       timeout: 5s
       retries: 5
 
+  modbus-sensor-simulator:
+    build: ./modbus-sensor-simulator
+    environment:
+      UPDATE_FREQUENCY_MS: ${UPDATE_FREQUENCY_MS}
+      MODBUS_PORT: ${MODBUS_PORT}
+      MODBUS_HOST: ${MODBUS_HOST}
+      BASE_TEMPERATURE: ${BASE_TEMPERATURE}
+    ports:
+      - ${MODBUS_PORT}:5020
+  sensor-data-collector:
+    build: ./sensor-data-collector
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      DEFAULT_SENSOR_ID: ${DEFAULT_SENSOR_ID}
+    ports:
+      - ${SENSOR_DATA_COLLECTOR_PORT}:4001
+    depends_on:
+      - postgres
+      - modbus-sensor-simulator
+  
   sensor-management-api:
     build: ./sensor-management-api
     environment:
@@ -23,8 +43,18 @@ services:
       - ${SENSOR_MANAGEMENT_API_PORT}:4000
     depends_on:
       - postgres
+      - sensor-data-collector
     volumes:
       - ./sensor-management-api/prisma:/app/prisma
 
+    
+  proa-monitor-dashboard:
+    build: ./proa-monitor-dashboard
+    environment:
+      - VITE_API_BASE_URL=http://localhost:4000
+    ports:
+      - ${FRONTEND_CLIENT_PORT}:3000
+    depends_on:
+      - sensor-management-api
 volumes:
   postgres_data:

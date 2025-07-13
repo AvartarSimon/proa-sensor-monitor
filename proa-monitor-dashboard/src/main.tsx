@@ -3,9 +3,9 @@ import en_GB from 'antd/es/locale/en_GB';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 
+import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
 import { TemperatureProvider } from './contexts/TemperatureContext';
-import { Home } from './pages/Home';
 import { store } from './store';
 
 // rewrite the transition data
@@ -24,7 +24,7 @@ root.render(
     <ConfigProvider locale={en_GB}>
       <ErrorBoundary>
         <TemperatureProvider>
-          <Home />
+          <App />
         </TemperatureProvider>
       </ErrorBoundary>
     </ConfigProvider>
