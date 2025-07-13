@@ -1,17 +1,21 @@
 {
   "name": "modbus-sensor-simulator",
   "version": "1.0.0",
-  "main": "sensor.ts",
+  "main": "src/sensor.ts",
   "scripts": {
-      "start": "ts-node sensor.ts"
+    "start": "ts-node ./src/sensor.ts"
   },
   "dependencies": {
-      "dotenv": "^17.2.0",
-      "modbus-serial": "^8.0.21"
+    "dotenv": "^17.2.0",
+    "modbus-serial": "^8.0.21"
   },
   "devDependencies": {
-      "@types/node": "^20.0.0",
-      "ts-node": "^10.0.0",
-      "typescript": "^5.0.0"
+    "@eslint/js": "^9.31.0",
+    "@types/node": "^20.0.0",
+    "eslint": "^9.31.0",
+    "globals": "^16.3.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.36.0"
   }
 }
