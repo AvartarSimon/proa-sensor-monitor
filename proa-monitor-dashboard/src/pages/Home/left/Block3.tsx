@@ -54,7 +54,7 @@ export default function Block3() {
     return () => clearInterval(intervalId);
   }, [timeRange]);
 
-  const latestData = data[data.length - 1];
+  const latestData = data[data?.length - 1];
   const isHigher = latestData?.percentageChange > 0;
 
   const getOption = () => {

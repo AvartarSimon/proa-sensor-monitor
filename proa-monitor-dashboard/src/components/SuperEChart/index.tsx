@@ -2,41 +2,41 @@ import { useSize } from 'ahooks';
 import { Lines3DChart, Map3DChart, Scatter3DChart } from 'echarts-gl/charts';
 import { Geo3DComponent } from 'echarts-gl/components';
 import type {
-    BarSeriesOption,
-    CustomSeriesOption,
-    GaugeSeriesOption,
-    LineSeriesOption,
-    PictorialBarSeriesOption,
-    PieSeriesOption,
-    SankeySeriesOption,
-    ScatterSeriesOption,
+  BarSeriesOption,
+  CustomSeriesOption,
+  GaugeSeriesOption,
+  LineSeriesOption,
+  PictorialBarSeriesOption,
+  PieSeriesOption,
+  SankeySeriesOption,
+  ScatterSeriesOption,
 } from 'echarts/charts';
 import {
-    BarChart,
-    CustomChart,
-    GaugeChart,
-    LineChart,
-    PictorialBarChart,
-    PieChart,
-    SankeyChart,
-    ScatterChart,
+  BarChart,
+  CustomChart,
+  GaugeChart,
+  LineChart,
+  PictorialBarChart,
+  PieChart,
+  SankeyChart,
+  ScatterChart,
 } from 'echarts/charts';
 import type {
-    GraphicComponentOption,
-    GridComponentOption,
-    LegendComponentOption,
-    PolarComponentOption,
-    TitleComponentOption,
-    TooltipComponentOption,
+  GraphicComponentOption,
+  GridComponentOption,
+  LegendComponentOption,
+  PolarComponentOption,
+  TitleComponentOption,
+  TooltipComponentOption,
 } from 'echarts/components';
 import {
-    DataZoomComponent,
-    GraphicComponent,
-    GridComponent,
-    LegendComponent,
-    PolarComponent,
-    TitleComponent,
-    TooltipComponent,
+  DataZoomComponent,
+  GraphicComponent,
+  GridComponent,
+  LegendComponent,
+  PolarComponent,
+  TitleComponent,
+  TooltipComponent,
 } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import { LabelLayout } from 'echarts/features';
@@ -151,7 +151,7 @@ export function SuperEChart(props: SuperEChartProps) {
 
     if (autoAction) {
       // Carousel chart, disable chart mouse interaction
-      if (Array.isArray(temp.series) && temp.series.length !== 0) {
+      if (Array.isArray(temp.series) && temp.series?.length !== 0) {
         temp.series[0].silent = true;
       }
     }
@@ -159,11 +159,11 @@ export function SuperEChart(props: SuperEChartProps) {
     return baseOptions.merge(temp);
   }, [autoAction, options]);
 
-  if (!Array.isArray(chartOptions.series)) {
+  if (!Array.isArray(chartOptions?.series)) {
     throw new Error('EChart series must be an array');
   }
 
-  if (chartOptions.series.length === 0) {
+  if (chartOptions?.series?.length === 0) {
     throw new Error('EChart series can not be an empty array');
   }
 
