@@ -1,6 +1,5 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { getPrismaClient } from "./config/prisma";
 import { getAppConfig } from "./config/app";
 import { corsMiddleware } from "./middleware/cors";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
@@ -27,7 +26,6 @@ export class App {
   }
 
   private initializeRoutes(): void {
-    const prisma = getPrismaClient();
     const httpClient = new HttpClient(getAppConfig().modbusSensorControlUrl);
 
     const sensorService = new SensorService(httpClient);
