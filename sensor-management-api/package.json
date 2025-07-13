@@ -1,12 +1,13 @@
 {
   "name": "sensor-management-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "ts-node src/server.ts",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -14,15 +15,30 @@
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.31.0",
-    "@types/node": "^20.0.0",
+    "@types/body-parser": "^1.19.6",
+    "@types/express": "^5.0.3",
+    "@types/node": "^20.19.7",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
     "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.5",
     "globals": "^16.3.0",
+    "i": "^0.3.7",
+    "npm": "^11.4.2",
     "prettier": "3.6.2",
+    "prisma": "^6.11.1",
     "ts-node": "^10.0.0",
-    "typescript": "^5.0.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.36.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.11.1",
+    "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
+    "dotenv": "^17.2.0",
+    "express": "^4.18.2",
+    "modbus-serial": "^8.0.21-no-serial-port",
+    "pg": "^8.0.0"
   }
 }

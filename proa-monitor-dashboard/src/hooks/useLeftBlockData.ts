@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector } from './useAppSelector';
-import {
-  requestLeftBlock1,
-  requestLeftBlock2,
-  requestLeftBlock3,
-} from '../services/leftBlocksData';
+import { requestLeftBlock1, requestLeftBlock2, requestLeftBlock3 } from '../services/api';
 
 interface LeftBlockData {
   block1: any[];
