@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "src/sensor.ts",
   "scripts": {
-    "start": "ts-node ./src/sensor.ts"
+    "start": "ts-node ./src/sensor.ts",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
     "dotenv": "^17.2.0",
@@ -13,7 +16,9 @@
     "@eslint/js": "^9.31.0",
     "@types/node": "^20.0.0",
     "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.5",
     "globals": "^16.3.0",
+    "prettier": "3.6.2",
     "ts-node": "^10.0.0",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.36.0"
