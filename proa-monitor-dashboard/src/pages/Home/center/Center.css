@@ -1,0 +1,138 @@
+.center {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.farm-scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.farm-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.farm-image {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Proa-Ede Temperature Monitor */
+.proa-monitor {
+  position: fixed;
+  top: 44.5%;
+  right: 26%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.monitor-body {
+  position: relative;
+  width: 200px;
+  height: 150px;
+}
+
+.monitor-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 120px;
+  padding: 15px;
+  color: #ecf0f1;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(145deg, #2c3e50, #34495e);
+  border: 3px solid #95a5a6;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.monitor-title {
+  margin-bottom: 10px;
+  color: #3498db;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.temperature-display {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.temp-value {
+  color: #e74c3c;
+  font-weight: bold;
+  font-size: 32px;
+  text-shadow: 0 0 8px rgba(231, 76, 60, 0.6);
+}
+
+.temp-unit {
+  margin-left: 5px;
+  color: #bdc3c7;
+  font-size: 18px;
+}
+
+.humidity-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.humidity-label {
+  color: #95a5a6;
+}
+
+.humidity-value {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.monitor-stand {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  width: 4px;
+  height: 20px;
+  background: #7f8c8d;
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+.monitor-stand::after {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 30px;
+  height: 5px;
+  background: #7f8c8d;
+  border-radius: 3px;
+  transform: translateX(-50%);
+  content: '';
+}
