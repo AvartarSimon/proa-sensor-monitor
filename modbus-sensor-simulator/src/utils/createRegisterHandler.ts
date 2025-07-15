@@ -1,6 +1,6 @@
-import { SensorState } from "./sensorState";
-import { generateTemperature } from "./generateTemperature";
-import { updateRegisterState } from "./updateRegisterState";
+import { SensorState } from './sensorState';
+import { generateTemperature } from './generateTemperature';
+import { updateRegisterState } from './updateRegisterState';
 
 export const createRegisterHandler = (
   getState: () => SensorState,

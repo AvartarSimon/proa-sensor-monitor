@@ -1,4 +1,4 @@
-import { SensorState } from "./sensorState";
+import { SensorState } from './sensorState';
 
 export const generateTemperature = (state: SensorState): number => {
   const baseTemp = 25;
@@ -6,6 +6,6 @@ export const generateTemperature = (state: SensorState): number => {
   const noise = (Math.random() - 0.5) * 2;
   const temperature = baseTemp + sineWave + noise + state.drift;
 
-  console.log("Current temperature: ***", temperature);
+  console.log('Current temperature: ***', temperature);
   return parseFloat(temperature.toFixed(1));
 };

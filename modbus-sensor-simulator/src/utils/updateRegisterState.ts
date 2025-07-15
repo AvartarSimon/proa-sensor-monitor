@@ -1,4 +1,4 @@
-import { SensorState } from "./sensorState";
+import { SensorState } from './sensorState';
 
 export const updateRegisterState = (
   state: SensorState,
