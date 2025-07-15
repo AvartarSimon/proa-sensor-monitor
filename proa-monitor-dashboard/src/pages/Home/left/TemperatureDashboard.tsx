@@ -6,6 +6,9 @@ import {
   type TemperatureData,
   type TemperatureStats,
 } from '../../../services/sensorDataApi';
+import { formattedTime } from '../../../utils';
+// import { useWarnMessage } from '../../../utils/useWarnMessage';
+import { message } from 'antd';
 
 type DataPoint = {
   time: number; // Unix timestamp
@@ -34,7 +37,8 @@ const TemperatureDashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedTimescale, setSelectedTimescale] = useState<string>('1h');
   const intervalRef = useRef<number | null>(null);
-
+  // const { showMessage, contextHolder } = useWarnMessage();
+  // const [messageApi, contextHolder] = message.useMessage();
   // Fetch temperature data from API
   const fetchTemperatureData = async (timescale: string = '1h') => {
     try {
@@ -47,6 +51,7 @@ const TemperatureDashboard: React.FC = () => {
         time: new Date(item.timestamp).getTime(),
         value: item.value,
       }));
+
       setData(chartData);
     } catch (err) {
       console.error('Error fetching temperature data:', err);
@@ -84,12 +89,42 @@ const TemperatureDashboard: React.FC = () => {
     intervalRef.current = window.setInterval(() => {
       fetchTemperatureData(selectedTimescale);
       fetchTemperatureStats(selectedTimescale);
-    }, 30000); // 30 seconds
-
+    }, 3000); // 3 seconds
+    message.success('success get !');
+    console.log('!!!1 data,stats');
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [selectedTimescale]);
+
+  // useEffect(() => {
+  //   console.log('!!!1 data,stats', stats, stats?.stats?.maxTemperature);
+  //   if (stats?.stats?.maxTemperature > 40 && stats?.stats?.averageTemperature < 50) {
+  //     console.log('here');
+  //     // showMessage({
+  //     //   type: 'warning',
+  //     //   content: `The maximum temperature is over ${stats?.stats?.maxTemperature}0C,please note!\\n Proa AI System has called the owner of the Farm`,
+  //     //   marginTop: '15vh',
+  //     // });
+  //   } else if (stats?.stats?.maxTemperature > 50) {
+  //     const error = () => {
+  //       messageApi.open({
+  //         type: 'error',
+  //         style: {
+  //           marginTop: '10vh',
+  //           zIndex: '100000',
+  //         },
+  //         content: `Warnning!The average temperature is over ${stats?.stats?.maxTemperature}0C,please note!\\n The message has been sent to the owner of the Farm`,
+  //       });
+  //     };
+  //     error();
+  //     // showMessage({
+  //     //   type: 'warning',
+  //     //   content: `Warnning!The average temperature is over ${stats?.stats?.maxTemperature}0C,please note!\\n The message has been sent to the owner of the Farm`,
+  //     //   marginTop: '15vh',
+  //     // });
+  //   }
+  // }, [stats?.stats?.averageTemperature]);
 
   const chartOption: echarts.EChartsOption = {
     title: {
@@ -102,7 +137,16 @@ const TemperatureDashboard: React.FC = () => {
     },
     tooltip: {
       trigger: 'axis',
-      formatter: '{b} : {c} °C',
+      formatter: (params: any) => {
+        console.log('!!!! params', params);
+        const data = params[0]; // only one series: Temperature
+        const date = new Date(data.data[0]); // x value (timestamp)
+        const value = data.data[1]; // y value (temperature)
+        // Format date manually
+        const time = formattedTime(date);
+
+        return `${time} : ${value} °C`;
+      },
     },
     xAxis: {
       type: 'time',
@@ -148,7 +192,7 @@ const TemperatureDashboard: React.FC = () => {
     ],
   };
 
-  if (loading && data.length === 0) {
+  if (loading && data?.length === 0) {
     return (
       <div className="dashboard-loading">
         <div className="loading-spinner"></div>
@@ -177,7 +221,7 @@ const TemperatureDashboard: React.FC = () => {
 
   return data?.length > 0 ? (
     <div className="temperature-dashboard">
-      {/* Header with Timescale Selector */}
+      {/* {contextHolder} */}
       <div className="dashboard-header">
         <h2>Temperature Dashboard</h2>
         <div className="timescale-selector">
@@ -260,10 +304,10 @@ const TemperatureDashboard: React.FC = () => {
           <h3>Data Summary</h3>
           <div className="summary-grid">
             <div className="summary-item">
-              <strong>First Reading:</strong> {new Date(stats.stats.firstReading).toLocaleString()}
+              <strong>First Reading:</strong> {formattedTime(new Date(stats.stats.firstReading))}
             </div>
             <div className="summary-item">
-              <strong>Last Reading:</strong> {new Date(stats.stats.lastReading).toLocaleString()}
+              <strong>Last Reading:</strong> {formattedTime(new Date(stats.stats.lastReading))}
             </div>
             <div className="summary-item">
               <strong>Time Range:</strong> {selectedTimescale}

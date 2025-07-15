@@ -1,9 +1,12 @@
+import { message } from 'antd';
 import './App.css';
 import RecentTemperatureChart from './pages/Home/left/RecentTemperatureChart';
 import SensorControl from './pages/Home/left/SensorControl';
 import TemperatureDashboard from './pages/Home/left/TemperatureDashboard';
 
 function App() {
+  console.log('home ess!!!!!!!!!!!');
+  message.success('success!!!!!!!!!!!!!!!');
   return (
     <div className="app">
       <header className="app-header">

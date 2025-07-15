@@ -9,6 +9,8 @@ import { SensorService } from './shared/services/sensor-service';
 // Application factory
 const createApplication = () => {
   const config = createConfig();
+  console.log('_________', config.databaseUrl);
+
   const modbusClient = createModbusClient();
   const databasePool = createDatabasePool(config);
   const sensorService = new SensorService(modbusClient);
@@ -27,12 +29,18 @@ const createApplication = () => {
   };
 
   const connectToSensor = async () => {
-    console.log('Connecting to Modbus sensor...');
-    const connected = await connectToModbusSensor(modbusClient, config);
-    if (connected) {
-      console.log('Successfully connected to Modbus sensor');
-    } else {
-      console.error('Failed to connect to Modbus sensor');
+    const maxRetries = 1000; // Effectively infinite
+    const retryDelay = 5000; // 5 seconds
+    let connected = false;
+    let attempt = 0;
+    while (!connected && attempt < maxRetries) {
+      attempt++;
+      console.log(`Connecting to Modbus sensor (attempt ${attempt})...`);
+      connected = await connectToModbusSensor(modbusClient, config);
+      if (!connected) {
+        console.error('Cannot connect to Modbus sensor, retrying in 5 seconds...');
+        await new Promise((resolve) => setTimeout(resolve, retryDelay));
+      }
     }
     return connected;
   };
@@ -47,14 +55,12 @@ const startApplication = async (): Promise<void> => {
   // Connect to sensor
   const connected = await app.connectToSensor();
 
-  if (connected) {
-    // Start both services
-    await app.startApiServer();
-    app.startSensorDataPolling();
-  } else {
+  if (!connected) {
     console.error('Cannot start services without Modbus connection');
     process.exit(1);
   }
+  await app.startApiServer();
+  app.startSensorDataPolling();
 };
 
 startApplication().catch((error) => {

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Settings, Play, Pause, RotateCcw } from 'lucide-react';
-import type { SensorStatus, SensorControlType } from '../services/api';
+import { Pause, Play, RotateCcw, Settings } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import type { SensorControlType, SensorStatus } from '../services/api';
 import { api } from '../services/api';
 
 interface SensorControlProps {
@@ -26,6 +26,7 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
         setSensorStatus(status);
       } catch (err) {
         console.error('Error fetching sensor status:', err);
+        setSensorStatus(null);
         setError('Failed to load sensor status');
       }
     };
@@ -95,11 +96,10 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
       <div className="control-header">
         <Settings className="control-icon" />
         <h3>Sensor Control</h3>
-        {sensorStatus && (
-          <div className={`status-indicator ${sensorStatus.sensor.status}`}>
-            {sensorStatus.sensor.status === 'connected' ? 'Connected' : 'Disconnected'}
-          </div>
-        )}
+
+        <div className={`status-indicator ${sensorStatus.sensor.status}`}>
+          {sensorStatus.sensor.status === 'connected' ? 'Connected' : 'Disconnected'}
+        </div>
       </div>
 
       {/* Error/Success Messages */}

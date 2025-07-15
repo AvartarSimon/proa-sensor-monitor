@@ -2,7 +2,7 @@ import { Pause, Play, RotateCcw, Settings } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import type { SensorControlType, SensorStatus } from '../../../services/sensorDataApi';
 import { sensorDataApi } from '../../../services/sensorDataApi';
-
+import { useWarnMessage } from '../../../utils/useWarnMessage';
 interface SensorControlProps {
   className?: string;
 }
@@ -17,7 +17,7 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-
+  const { showMessage, contextHolder } = useWarnMessage();
   // Fetch sensor status on mount and periodically
   useEffect(() => {
     const fetchStatus = async () => {
@@ -39,7 +39,15 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
     const interval = setInterval(fetchStatus, 5000); // Update every 5 seconds
     return () => clearInterval(interval);
   }, []);
-
+  useEffect(() => {
+    if (!sensorStatus?.sensorConnection?.isConnected) {
+      showMessage({
+        type: 'error',
+        content:
+          'Sensor is not connected, please check the sensor or the link!\\n(Proa AI System has got the notice,will check the sensor immediately)',
+      });
+    }
+  }, [sensorStatus]);
   // Handle control changes
   const handleControlChange = (field: keyof SensorControlType, value: number | boolean) => {
     setControls((prev) => ({
@@ -126,13 +134,14 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
       {/* Control Form */}
       <div className="control-form">
         <div className="form-group">
+          {contextHolder}
           <label htmlFor="period">Period (ms):</label>
           <input
             type="range"
             id="period"
-            min="100"
+            min="0"
             max="10000"
-            step="100"
+            step="500"
             value={controls.period}
             onChange={(e) => handleControlChange('period', parseInt(e.target.value))}
             disabled={loading}
@@ -161,11 +170,16 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
             <button
               type="button"
               className={`status-btn ${controls.status ? 'active' : ''}`}
+              style={{ border: 'none', background: controls.status ? '#FCA5A5' : '#A7F3D0' }}
               onClick={toggleSensor}
               disabled={loading}
             >
-              {controls.status ? <Play size={16} /> : <Pause size={16} />}
-              {controls.status ? 'Running' : 'Stopped'}
+              {controls.status ? (
+                <Pause size={16} style={{ paddingTop: '3.5px' }} />
+              ) : (
+                <Play size={16} style={{ paddingTop: '3.5px' }} />
+              )}
+              {controls.status ? 'Stop' : 'Start'}
             </button>
           </div>
         </div>

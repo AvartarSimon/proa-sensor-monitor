@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { HttpClient } from '../utils/httpClient';
 import { TemperatureValidator } from '../validators/temperature';
 import { ControlResponse } from './types';
@@ -8,6 +9,7 @@ export class SensorService {
   async getSensorStatus(): Promise<any> {
     try {
       const status = await this.httpClient.get<any>('/sensor/status');
+      console.log('======sensor status=======================');
 
       return {
         period: status.period,
@@ -22,6 +24,7 @@ export class SensorService {
         },
       };
     } catch (error) {
+      console.log('======error=======================', error);
       console.error('Error getting sensor status:', error);
 
       return {

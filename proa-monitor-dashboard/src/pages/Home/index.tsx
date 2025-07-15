@@ -1,5 +1,7 @@
+import { message } from 'antd';
 import Center from './center';
 import Header from './header';
+import './Home.css';
 import LeftBlock1 from './left/Block1';
 import LeftBlock2 from './left/Block2';
 import LeftBlock3 from './left/Block3';
@@ -7,9 +9,9 @@ import RightBlock1 from './right/Block1';
 import RightBlock2 from './right/Block2';
 import RightBlock3 from './right/Block3';
 
-import './Home.css';
-
 export const Home = () => {
+  console.log('home ess!!!!!!!!!!!');
+  message.success('success!!!!!!!!!!!!!!!');
   return (
     <div className="home">
       <Center />

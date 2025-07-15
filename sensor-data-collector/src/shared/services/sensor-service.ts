@@ -1,6 +1,12 @@
 import ModbusRTU from 'modbus-serial';
-import { writeRegister, readRegister, readRegisters } from '../../utils/modbus-utils';
-
+import {
+  writeRegister,
+  readRegister,
+  readRegisters,
+  createModbusClient,
+  connectToModbusSensor,
+} from '../../utils/modbus-utils';
+import { createConfig } from '../../config';
 // Sensor control interface
 export interface SensorControl {
   period?: number;
@@ -72,5 +78,12 @@ export class SensorService {
       console.error('Sensor connection test failed:', error);
       return false;
     }
+  }
+
+  async reconnectModbus(): Promise<boolean> {
+    // Replace the modbusClient with a new one and reconnect
+    this.modbusClient = createModbusClient();
+    const config = createConfig();
+    return connectToModbusSensor(this.modbusClient, config);
   }
 }

@@ -18,7 +18,7 @@ export class TemperatureRepository {
           temperature_celsius: true,
         },
         orderBy: {
-          timestamp: 'asc',
+          timestamp: 'desc',
         },
         take: limit,
       });

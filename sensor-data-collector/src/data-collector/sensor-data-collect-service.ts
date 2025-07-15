@@ -22,6 +22,7 @@ export const startDataPollingFromSensor = async (
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error collecting data from polling sensor:', errorMessage);
+    await sensorService.reconnectModbus();
   }
   setTimeout(() => startDataPollingFromSensor(sensorService, sensorReadingsRepository), 1000);
 };
