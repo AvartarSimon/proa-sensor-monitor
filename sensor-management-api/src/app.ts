@@ -1,17 +1,17 @@
-import express from "express";
-import bodyParser from "body-parser";
-import { getPrismaClient } from "./config/prisma";
-import { getAppConfig } from "./config/app";
-import { corsMiddleware } from "./middleware/cors";
-import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
-import { TemperatureRepository } from "./repositories/temperatureRepository";
-import { TemperatureService } from "./services/temperatureService";
-import { SensorService } from "./services/sensorService";
-import { TemperatureController } from "./controllers/temperatureController";
-import { SensorController } from "./controllers/sensorController";
-import { createTemperatureRoutes } from "./routes/temperatureRoutes";
-import { createSensorRoutes } from "./routes/sensorRoutes";
-import { HttpClient } from "./utils/httpClient";
+import express from 'express';
+import bodyParser from 'body-parser';
+import { getPrismaClient } from './config/prisma';
+import { getAppConfig } from './config/app';
+import { corsMiddleware } from './middleware/cors';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import { TemperatureRepository } from './repositories/temperatureRepository';
+import { TemperatureService } from './services/temperatureService';
+import { SensorService } from './services/sensorService';
+import { TemperatureController } from './controllers/temperatureController';
+import { SensorController } from './controllers/sensorController';
+import { createTemperatureRoutes } from './routes/temperatureRoutes';
+import { createSensorRoutes } from './routes/sensorRoutes';
+import { HttpClient } from './utils/httpClient';
 
 export class App {
   private app: express.Application;
@@ -44,16 +44,16 @@ export class App {
     const temperatureRoutes = createTemperatureRoutes(temperatureController);
     const sensorRoutes = createSensorRoutes(sensorController);
 
-    this.app.use("/api/temperatures", temperatureRoutes);
-    this.app.use("/sensor", sensorRoutes);
+    this.app.use('/api/temperatures', temperatureRoutes);
+    this.app.use('/sensor', sensorRoutes);
 
-    this.app.get("/health", (_req, res) => {
+    this.app.get('/health', (_req, res) => {
       res.json({
-        status: "healthy",
+        status: 'healthy',
         timestamp: new Date().toISOString(),
         services: {
-          database: "connected",
-          sensorControl: "connected",
+          database: 'connected',
+          sensorControl: 'connected',
         },
       });
     });

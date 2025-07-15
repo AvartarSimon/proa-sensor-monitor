@@ -1,14 +1,11 @@
-import { PrismaClient } from "../../generated/prisma/client";
+import { PrismaClient } from '../../generated/prisma/client';
 
 let prisma: PrismaClient;
 
 export const getPrismaClient = (): PrismaClient => {
   if (!prisma) {
     prisma = new PrismaClient({
-      log:
-        process.env["NODE_ENV"] === "development"
-          ? ["query", "error", "warn"]
-          : ["error"],
+      log: process.env['NODE_ENV'] === 'development' ? ['query', 'error', 'warn'] : ['error'],
     });
   }
   return prisma;
@@ -21,6 +18,6 @@ export const closePrismaClient = async (): Promise<void> => {
 };
 
 // Graceful shutdown
-process.on("beforeExit", async () => {
+process.on('beforeExit', async () => {
   await closePrismaClient();
 });

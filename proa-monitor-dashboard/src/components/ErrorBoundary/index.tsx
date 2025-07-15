@@ -29,9 +29,9 @@ export default class ErrorBoundary extends React.PureComponent<
     return { hasError: true };
   }
 
-  componentDidCatch(error: any, errorInfo: any) {
-    // Log error information or send to server
-  }
+  // componentDidCatch(error: any, errorInfo: any) {
+  //   // Log error information or send to server
+  // }
 
   render() {
     if (this.state.hasError) {

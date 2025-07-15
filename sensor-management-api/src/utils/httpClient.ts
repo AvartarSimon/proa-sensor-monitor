@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export class HttpClient {
   private client: any;
@@ -8,7 +8,7 @@ export class HttpClient {
       baseURL,
       timeout: 5000,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
   }

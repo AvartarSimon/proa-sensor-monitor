@@ -29,4 +29,4 @@ export const TemperatureProvider: React.FC<TemperatureProviderProps> = ({ childr
       {children}
     </TemperatureContext.Provider>
   );
-}; 
+};

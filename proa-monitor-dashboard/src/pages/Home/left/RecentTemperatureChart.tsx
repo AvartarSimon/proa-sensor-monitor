@@ -1,7 +1,7 @@
-import * as echarts from "echarts";
-import ReactECharts from "echarts-for-react";
-import React, { useEffect, useRef, useState } from "react";
-import { sensorDataApi, type TemperatureData } from "../../../services/sensorDataApi";
+import * as echarts from 'echarts';
+import ReactECharts from 'echarts-for-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { sensorDataApi, type TemperatureData } from '../../../services/sensorDataApi';
 
 type DataPoint = {
   time: number; // Unix timestamp
@@ -24,17 +24,15 @@ const RecentTemperatureChart: React.FC = () => {
       const response = await sensorDataApi.getRecentTemperatures(100);
 
       // Transform API data to chart format
-      const chartData: DataPoint[] = response?.data?.map(
-        (item: TemperatureData) => ({
-          time: new Date(item.timestamp).getTime(),
-          value: item.value,
-        })
-      );
+      const chartData: DataPoint[] = response?.data?.map((item: TemperatureData) => ({
+        time: new Date(item.timestamp).getTime(),
+        value: item.value,
+      }));
 
       setData(chartData);
     } catch (err) {
-      console.error("Error fetching temperature data:", err);
-      setError("Failed to load temperature data");
+      console.error('Error fetching temperature data:', err);
+      setError('Failed to load temperature data');
     } finally {
       setLoading(false);
     }
@@ -57,32 +55,32 @@ const RecentTemperatureChart: React.FC = () => {
 
   const option: echarts.EChartsOption = {
     title: {
-      text: "Recent Temperature Data (Last 100 Readings)",
-      left: "center",
+      text: 'Recent Temperature Data (Last 100 Readings)',
+      left: 'center',
     },
     tooltip: {
-      trigger: "axis",
-      formatter: "{b} : {c} °C",
+      trigger: 'axis',
+      formatter: '{b} : {c} °C',
     },
     xAxis: {
-      type: "time",
-      name: "Time",
+      type: 'time',
+      name: 'Time',
     },
     yAxis: {
-      type: "value",
-      name: "°C",
-      min: "dataMin",
-      max: "dataMax",
+      type: 'value',
+      name: '°C',
+      min: 'dataMin',
+      max: 'dataMax',
     },
     dataZoom: [
       {
-        type: "slider",
+        type: 'slider',
         xAxisIndex: 0,
         start: 0,
         end: 100,
       },
       {
-        type: "inside",
+        type: 'inside',
         xAxisIndex: 0,
         start: 0,
         end: 100,
@@ -90,8 +88,8 @@ const RecentTemperatureChart: React.FC = () => {
     ],
     series: [
       {
-        name: "Temperature",
-        type: "line",
+        name: 'Temperature',
+        type: 'line',
         showSymbol: false,
         smooth: true,
         areaStyle: {
@@ -107,9 +105,9 @@ const RecentTemperatureChart: React.FC = () => {
       <div
         style={{
           height: 400,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <p>Loading temperature data...</p>
@@ -122,10 +120,10 @@ const RecentTemperatureChart: React.FC = () => {
       <div
         style={{
           height: 400,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "red",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'red',
         }}
       >
         <p>Error: {error}</p>

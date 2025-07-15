@@ -41,7 +41,6 @@ export default function Block1() {
 
   useEffect(() => {
     generateHumidityData();
-
     const updateTime = () => {
       const now = new Date();
       const hours = now.getHours().toString().padStart(2, '0');
@@ -71,7 +70,7 @@ export default function Block1() {
       clearTimeout(dataInterval);
     };
   }, []);
-
+  console.log('currenttime', currentTime);
   const getOption = () => {
     const dates = humidityData.map((day) => day.year);
     const series = [
@@ -127,12 +126,7 @@ export default function Block1() {
         axisPointer: { type: 'shadow' },
       },
       legend: {
-        data: [
-          'Indoor Humidity',
-          'Outdoor Humidity',
-          'Greenhouse Humidity',
-          'Storage Humidity',
-        ],
+        data: ['Indoor Humidity', 'Outdoor Humidity', 'Greenhouse Humidity', 'Storage Humidity'],
         textStyle: { color: '#fff' },
       },
       grid: {
@@ -165,9 +159,7 @@ export default function Block1() {
   return (
     <div className="block1">
       <PrimaryCard title="Humidity Monitoring (5-Days Trend)">
-        <div
-          className="block1__chart"
-          style={{ height: toAdaptedPx(450), position: 'relative' }}>
+        <div className="block1__chart" style={{ height: toAdaptedPx(450), position: 'relative' }}>
           {humidityData?.length > 0 && (
             <ReactECharts
               key="right-block1-chart"

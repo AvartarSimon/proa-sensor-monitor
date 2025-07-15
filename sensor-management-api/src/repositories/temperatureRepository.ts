@@ -1,13 +1,10 @@
-import { PrismaClient } from "../../generated/prisma/client";
-import { TemperatureData, TemperatureStats, TimeRange } from "./types";
+import { PrismaClient } from '../../generated/prisma/client';
+import { TemperatureData, TemperatureStats, TimeRange } from './types';
 
 export class TemperatureRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async getTemperatureData(
-    timeRange: TimeRange,
-    limit: number = 1000,
-  ): Promise<TemperatureData[]> {
+  async getTemperatureData(timeRange: TimeRange, limit: number = 1000): Promise<TemperatureData[]> {
     try {
       const readings = await this.prisma.sensor_readings.findMany({
         where: {
@@ -21,20 +18,18 @@ export class TemperatureRepository {
           temperature_celsius: true,
         },
         orderBy: {
-          timestamp: "asc",
+          timestamp: 'asc',
         },
         take: limit,
       });
 
-      return readings.map(
-        (reading: { timestamp: Date; temperature_celsius: any }) => ({
-          timestamp: reading.timestamp.toISOString(),
-          value: Number(reading.temperature_celsius),
-        }),
-      );
+      return readings.map((reading: { timestamp: Date; temperature_celsius: any }) => ({
+        timestamp: reading.timestamp.toISOString(),
+        value: Number(reading.temperature_celsius),
+      }));
     } catch (error) {
-      console.error("Database error in getTemperatureData:", error);
-      throw new Error("Failed to fetch temperature data from database");
+      console.error('Database error in getTemperatureData:', error);
+      throw new Error('Failed to fetch temperature data from database');
     }
   }
 
@@ -64,9 +59,7 @@ export class TemperatureRepository {
       });
 
       // Get standard deviation using raw query since Prisma doesn't support it in aggregate
-      const stdDevResult = await this.prisma.$queryRaw<
-        Array<{ std_dev: number }>
-      >`
+      const stdDevResult = await this.prisma.$queryRaw<Array<{ std_dev: number }>>`
                 SELECT STDDEV(temperature_celsius) as std_dev
                 FROM sensor_readings 
                 WHERE timestamp >= ${timeRange.from} AND timestamp <= ${timeRange.to}
@@ -86,20 +79,18 @@ export class TemperatureRepository {
           maxTemperature: Number(maxTemp),
           standardDeviation: Number(stdDev),
           temperatureRange: Number(maxTemp) - Number(minTemp),
-          firstReading:
-            stats._min.timestamp?.toISOString() || timeRange.from.toISOString(),
-          lastReading:
-            stats._max.timestamp?.toISOString() || timeRange.to.toISOString(),
+          firstReading: stats._min.timestamp?.toISOString() || timeRange.from.toISOString(),
+          lastReading: stats._max.timestamp?.toISOString() || timeRange.to.toISOString(),
         },
         meta: {
           from: timeRange.from.toISOString(),
           to: timeRange.to.toISOString(),
-          timescale: "custom",
+          timescale: 'custom',
         },
       };
     } catch (error) {
-      console.error("Database error in getTemperatureStats:", error);
-      throw new Error("Failed to fetch temperature statistics from database");
+      console.error('Database error in getTemperatureStats:', error);
+      throw new Error('Failed to fetch temperature statistics from database');
     }
   }
 
@@ -111,20 +102,18 @@ export class TemperatureRepository {
           temperature_celsius: true,
         },
         orderBy: {
-          timestamp: "desc",
+          timestamp: 'desc',
         },
         take: limit,
       });
 
-      return readings
-        .reverse()
-        .map((reading: { timestamp: Date; temperature_celsius: any }) => ({
-          timestamp: reading.timestamp.toISOString(),
-          value: Number(reading.temperature_celsius),
-        }));
+      return readings.reverse().map((reading: { timestamp: Date; temperature_celsius: any }) => ({
+        timestamp: reading.timestamp.toISOString(),
+        value: Number(reading.temperature_celsius),
+      }));
     } catch (error) {
-      console.error("Database error in getRecentTemperatures:", error);
-      throw new Error("Failed to fetch recent temperature data from database");
+      console.error('Database error in getRecentTemperatures:', error);
+      throw new Error('Failed to fetch recent temperature data from database');
     }
   }
 
@@ -133,7 +122,7 @@ export class TemperatureRepository {
       await this.prisma.$queryRaw`SELECT 1`;
       return true;
     } catch (error) {
-      console.error("Database connection test failed:", error);
+      console.error('Database connection test failed:', error);
       return false;
     }
   }

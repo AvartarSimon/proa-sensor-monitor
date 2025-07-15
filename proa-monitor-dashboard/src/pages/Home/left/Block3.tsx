@@ -22,33 +22,35 @@ export default function Block3() {
     const generateTemperatureData = () => {
       const currentTemp = Math.round((Math.random() * 30 + 10) * 10) / 10;
       const historicalAvg = Math.round((Math.random() * 25 + 12) * 10) / 10;
-      const percentageChange = ((currentTemp - historicalAvg) / historicalAvg * 100);
-      
+      const percentageChange = ((currentTemp - historicalAvg) / historicalAvg) * 100;
+
       const now = new Date();
-      const timeString = now.toLocaleTimeString('en-GB', { 
+      const timeString = now.toLocaleTimeString('en-GB', {
         hour12: false,
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit'
+        second: '2-digit',
       });
 
-      setData(prev => {
-        const newData = [...prev, {
-          time: timeString,
-          currentTemp,
-          historicalAvg,
-          percentageChange
-        }];
-        
+      setData((prev) => {
+        const newData = [
+          ...prev,
+          {
+            time: timeString,
+            currentTemp,
+            historicalAvg,
+            percentageChange,
+          },
+        ];
+
         return newData.slice(-20);
       });
     };
 
     generateTemperatureData();
 
-    const interval = timeRange === 'second' ? 1000 : 
-                    timeRange === 'minute' ? 60000 : 86400000;
-    
+    const interval = timeRange === 'second' ? 1000 : timeRange === 'minute' ? 60000 : 86400000;
+
     const intervalId = setInterval(generateTemperatureData, interval);
 
     return () => clearInterval(intervalId);
@@ -65,9 +67,9 @@ export default function Block3() {
     return {
       tooltip: {
         trigger: 'item',
-        formatter: function(params: any) {
+        formatter: function (params: any) {
           return `${params.name}: ${params.value}°C`;
-        }
+        },
       },
       series: [
         {
@@ -78,33 +80,33 @@ export default function Block3() {
             {
               name: 'Current Temperature',
               value: currentTemp,
-              itemStyle: { color: '#FF6B6B' }
+              itemStyle: { color: '#FF6B6B' },
             },
             {
               name: 'Historical Average',
               value: historicalAvg,
-              itemStyle: { color: '#4ECDC4' }
-            }
+              itemStyle: { color: '#4ECDC4' },
+            },
           ],
           label: {
             show: true,
-            formatter: function(params: any) {
+            formatter: function (params: any) {
               return `${params.name}\n${params.value}°C`;
             },
             color: '#fff',
             fontSize: 14,
-            fontWeight: 'bold'
+            fontWeight: 'bold',
           },
           emphasis: {
             itemStyle: {
               shadowBlur: 15,
               shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
       ],
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
     };
   };
 
@@ -137,7 +139,9 @@ export default function Block3() {
               </div>
               <div className="block3__change">
                 <span className="block3__label">Change:</span>
-                <span className={`block3__value ${isHigher ? 'block3__value--up' : 'block3__value--down'}`}>
+                <span
+                  className={`block3__value ${isHigher ? 'block3__value--up' : 'block3__value--down'}`}
+                >
                   {isHigher ? '↗' : '↘'} {Math.abs(latestData?.percentageChange || 0).toFixed(1)}%
                 </span>
               </div>

@@ -23,16 +23,11 @@ export function MaximizeModal(props: MaximizeModalProps) {
       <div className="maximize-modal__content">
         <div className="maximize-modal__header">
           <span>Vehicle Tracking Dashboard</span>
-          <button 
-            className="maximize-modal__close"
-            onClick={restProps.onCancel}
-          >
+          <button className="maximize-modal__close" onClick={restProps.onCancel}>
             ✕
           </button>
         </div>
-        <div style={{ padding: '16px' }}>
-          {children}
-        </div>
+        <div style={{ padding: '16px' }}>{children}</div>
       </div>
     </Modal>
   );

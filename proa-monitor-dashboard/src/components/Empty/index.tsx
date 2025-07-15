@@ -11,10 +11,7 @@ export function Empty(props: EmptyProps) {
 
   return (
     <div className={`empty ${className}`} {...restProps}>
-      <div 
-        className="empty__image" 
-        style={{ width: imageWidth, height: imageWidth / 1.333 }}
-      />
+      <div className="empty__image" style={{ width: imageWidth, height: imageWidth / 1.333 }} />
     </div>
   );
 }

@@ -1,11 +1,11 @@
-import * as echarts from "echarts";
-import ReactECharts from "echarts-for-react";
-import React, { useEffect, useRef, useState } from "react";
+import * as echarts from 'echarts';
+import ReactECharts from 'echarts-for-react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   sensorDataApi,
   type TemperatureData,
   type TemperatureStats,
-} from "../../../services/sensorDataApi";
+} from '../../../services/sensorDataApi';
 
 type DataPoint = {
   time: number; // Unix timestamp
@@ -20,11 +20,11 @@ type TimescaleOption = {
 
 // Static timescales configuration
 const TIMESCALES: TimescaleOption[] = [
-  { value: "1h", label: "Last Hour", description: "Last 60 minutes" },
-  { value: "6h", label: "Last 6 Hours", description: "Last 6 hours" },
-  { value: "1d", label: "Last Day", description: "Last 24 hours" },
-  { value: "7d", label: "Last Week", description: "Last 7 days" },
-  { value: "30d", label: "Last Month", description: "Last 30 days" },
+  { value: '1h', label: 'Last Hour', description: 'Last 60 minutes' },
+  { value: '6h', label: 'Last 6 Hours', description: 'Last 6 hours' },
+  { value: '1d', label: 'Last Day', description: 'Last 24 hours' },
+  { value: '7d', label: 'Last Week', description: 'Last 7 days' },
+  { value: '30d', label: 'Last Month', description: 'Last 30 days' },
 ];
 
 const TemperatureDashboard: React.FC = () => {
@@ -32,42 +32,37 @@ const TemperatureDashboard: React.FC = () => {
   const [stats, setStats] = useState<TemperatureStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedTimescale, setSelectedTimescale] = useState<string>("1h");
+  const [selectedTimescale, setSelectedTimescale] = useState<string>('1h');
   const intervalRef = useRef<number | null>(null);
 
   // Fetch temperature data from API
-  const fetchTemperatureData = async (timescale: string = "1h") => {
+  const fetchTemperatureData = async (timescale: string = '1h') => {
     try {
       setLoading(true);
       setError(null);
-
       // Get temperature data with timescale
-      const response = await sensorDataApi.getTemperatures(timescale, "raw");
-
+      const response = await sensorDataApi.getTemperatures(timescale, 'raw');
       // Transform API data to chart format
-      const chartData: DataPoint[] = response?.data?.map(
-        (item: TemperatureData) => ({
-          time: new Date(item.timestamp).getTime(),
-          value: item.value,
-        })
-      );
-
+      const chartData: DataPoint[] = response?.data?.map((item: TemperatureData) => ({
+        time: new Date(item.timestamp).getTime(),
+        value: item.value,
+      }));
       setData(chartData);
     } catch (err) {
-      console.error("Error fetching temperature data:", err);
-      setError("Failed to load temperature data");
+      console.error('Error fetching temperature data:', err);
+      setError('Failed to load temperature data');
     } finally {
       setLoading(false);
     }
   };
 
   // Fetch temperature statistics
-  const fetchTemperatureStats = async (timescale: string = "1h") => {
+  const fetchTemperatureStats = async (timescale: string = '1h') => {
     try {
       const statsResponse = await sensorDataApi.getTemperatureStats(timescale);
       setStats(statsResponse);
     } catch (err) {
-      console.error("Error fetching temperature stats:", err);
+      console.error('Error fetching temperature stats:', err);
       // Don't set error for stats, as it's not critical
     }
   };
@@ -99,19 +94,19 @@ const TemperatureDashboard: React.FC = () => {
   const chartOption: echarts.EChartsOption = {
     title: {
       text: `Temperature Chart (${selectedTimescale})`,
-      left: "center",
+      left: 'center',
       textStyle: {
         fontSize: 16,
-        fontWeight: "bold",
+        fontWeight: 'bold',
       },
     },
     tooltip: {
-      trigger: "axis",
-      formatter: "{b} : {c} °C",
+      trigger: 'axis',
+      formatter: '{b} : {c} °C',
     },
     xAxis: {
-      type: "time",
-      name: "Time",
+      type: 'time',
+      name: 'Time',
       axisLabel: {
         formatter: (value: number) => {
           const date = new Date(value);
@@ -120,20 +115,20 @@ const TemperatureDashboard: React.FC = () => {
       },
     },
     yAxis: {
-      type: "value",
-      name: "°C",
-      min: stats ? Math.floor(stats.stats?.minTemperature - 2) : "dataMin",
-      max: stats ? Math.ceil(stats.stats?.maxTemperature + 2) : "dataMax",
+      type: 'value',
+      name: '°C',
+      min: stats ? Math.floor(stats.stats?.minTemperature - 2) : 'dataMin',
+      max: stats ? Math.ceil(stats.stats?.maxTemperature + 2) : 'dataMax',
     },
     dataZoom: [
       {
-        type: "slider",
+        type: 'slider',
         xAxisIndex: 0,
         start: 0,
         end: 100,
       },
       {
-        type: "inside",
+        type: 'inside',
         xAxisIndex: 0,
         start: 0,
         end: 100,
@@ -141,8 +136,8 @@ const TemperatureDashboard: React.FC = () => {
     ],
     series: [
       {
-        name: "Temperature",
-        type: "line",
+        name: 'Temperature',
+        type: 'line',
         showSymbol: false,
         smooth: true,
         areaStyle: {
@@ -208,9 +203,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-icon">📊</div>
             <div className="stat-content">
               <div className="stat-label">Average</div>
-              <div className="stat-value">
-                {stats.stats.averageTemperature.toFixed(1)}°C
-              </div>
+              <div className="stat-value">{stats.stats.averageTemperature.toFixed(1)}°C</div>
             </div>
           </div>
 
@@ -218,9 +211,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-icon">📉</div>
             <div className="stat-content">
               <div className="stat-label">Minimum</div>
-              <div className="stat-value">
-                {stats.stats.minTemperature.toFixed(1)}°C
-              </div>
+              <div className="stat-value">{stats.stats.minTemperature.toFixed(1)}°C</div>
             </div>
           </div>
 
@@ -228,9 +219,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-icon">📈</div>
             <div className="stat-content">
               <div className="stat-label">Maximum</div>
-              <div className="stat-value">
-                {stats.stats.maxTemperature.toFixed(1)}°C
-              </div>
+              <div className="stat-value">{stats.stats.maxTemperature.toFixed(1)}°C</div>
             </div>
           </div>
 
@@ -238,9 +227,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-icon">📏</div>
             <div className="stat-content">
               <div className="stat-label">Range</div>
-              <div className="stat-value">
-                {stats.stats.temperatureRange.toFixed(1)}°C
-              </div>
+              <div className="stat-value">{stats.stats.temperatureRange.toFixed(1)}°C</div>
             </div>
           </div>
 
@@ -256,9 +243,7 @@ const TemperatureDashboard: React.FC = () => {
             <div className="stat-icon">📊</div>
             <div className="stat-content">
               <div className="stat-label">Std Dev</div>
-              <div className="stat-value">
-                {stats.stats.standardDeviation.toFixed(2)}°C
-              </div>
+              <div className="stat-value">{stats.stats.standardDeviation.toFixed(2)}°C</div>
             </div>
           </div>
         </div>
@@ -275,12 +260,10 @@ const TemperatureDashboard: React.FC = () => {
           <h3>Data Summary</h3>
           <div className="summary-grid">
             <div className="summary-item">
-              <strong>First Reading:</strong>{" "}
-              {new Date(stats.stats.firstReading).toLocaleString()}
+              <strong>First Reading:</strong> {new Date(stats.stats.firstReading).toLocaleString()}
             </div>
             <div className="summary-item">
-              <strong>Last Reading:</strong>{" "}
-              {new Date(stats.stats.lastReading).toLocaleString()}
+              <strong>Last Reading:</strong> {new Date(stats.stats.lastReading).toLocaleString()}
             </div>
             <div className="summary-item">
               <strong>Time Range:</strong> {selectedTimescale}

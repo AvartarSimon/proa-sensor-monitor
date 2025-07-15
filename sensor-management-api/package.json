@@ -22,6 +22,7 @@
     "@typescript-eslint/parser": "^8.36.0",
     "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-unicorn": "^59.0.1",
     "globals": "^16.3.0",
     "i": "^0.3.7",
     "npm": "^11.4.2",
@@ -39,6 +40,21 @@
     "dotenv": "^17.2.0",
     "express": "^4.18.2",
     "modbus-serial": "^8.0.21-no-serial-port",
-    "pg": "^8.0.0"
+    "pg": "^8.0.0",
+    "@eslint/js": "^9.31.0",
+    "@types/body-parser": "^1.19.6",
+    "@types/express": "^5.0.3",
+    "@types/node": "^20.0.0",
+    "@types/pg": "^8.15.4",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-unicorn": "^59.0.1",
+    "globals": "^16.3.0",
+    "prettier": "3.6.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.36.0"
   }
 }

@@ -147,7 +147,7 @@ export function SuperEChart(props: SuperEChartProps) {
   const pageSize = useSize(document.body);
 
   const chartOptions = useMemo(() => {
-    let temp = options;
+    const temp = options;
 
     if (autoAction) {
       // Carousel chart, disable chart mouse interaction
@@ -254,8 +254,8 @@ export function SuperEChart(props: SuperEChartProps) {
     };
   }, [chartInstance, autoAction]);
 
-  let realWidth = typeof width === 'number' ? toAdaptedPx(width) : width;
-  let realHeight = typeof height === 'number' ? toAdaptedPx(height) : height;
+  const realWidth = typeof width === 'number' ? toAdaptedPx(width) : width;
+  const realHeight = typeof height === 'number' ? toAdaptedPx(height) : height;
 
   return isEmpty ? (
     <Empty imageWidth={toAdaptedPx(120)} style={{ height: realHeight }} />

@@ -9,7 +9,7 @@ import RightBlock3 from './right/Block3';
 
 import './Home.css';
 
-export const Home = ()=> {
+export const Home = () => {
   return (
     <div className="home">
       <Center />
@@ -29,4 +29,4 @@ export const Home = ()=> {
       </div>
     </div>
   );
-}
+};

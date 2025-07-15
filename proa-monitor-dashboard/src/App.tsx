@@ -1,7 +1,7 @@
-import "./App.css";
-import RecentTemperatureChart from "./pages/Home/left/RecentTemperatureChart";
-import SensorControl from "./pages/Home/left/SensorControl";
-import TemperatureDashboard from "./pages/Home/left/TemperatureDashboard";
+import './App.css';
+import RecentTemperatureChart from './pages/Home/left/RecentTemperatureChart';
+import SensorControl from './pages/Home/left/SensorControl';
+import TemperatureDashboard from './pages/Home/left/TemperatureDashboard';
 
 function App() {
   return (
@@ -26,7 +26,6 @@ function App() {
           <RecentTemperatureChart />
         </section>
       </main>
-
     </div>
   );
 }

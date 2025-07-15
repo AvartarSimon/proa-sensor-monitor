@@ -1,30 +1,26 @@
-import {
-  TemperatureQueryParams,
-  StatsQueryParams,
-  SensorControlParams,
-} from "../services/types";
+import { TemperatureQueryParams, StatsQueryParams, SensorControlParams } from '../services/types';
 
 export class TemperatureValidator {
   static validateTemperatureQuery(params: any): TemperatureQueryParams {
     const validated: TemperatureQueryParams = {};
 
-    if (params.from && typeof params.from === "string") {
+    if (params.from && typeof params.from === 'string') {
       validated.from = params.from;
     }
 
-    if (params.to && typeof params.to === "string") {
+    if (params.to && typeof params.to === 'string') {
       validated.to = params.to;
     }
 
-    if (params.timescale && typeof params.timescale === "string") {
+    if (params.timescale && typeof params.timescale === 'string') {
       validated.timescale = params.timescale;
     }
 
-    if (params.aggregation && typeof params.aggregation === "string") {
+    if (params.aggregation && typeof params.aggregation === 'string') {
       validated.aggregation = params.aggregation;
     }
 
-    if (params.limit && typeof params.limit === "string") {
+    if (params.limit && typeof params.limit === 'string') {
       validated.limit = params.limit;
     }
 
@@ -34,15 +30,15 @@ export class TemperatureValidator {
   static validateStatsQuery(params: any): StatsQueryParams {
     const validated: StatsQueryParams = {};
 
-    if (params.from && typeof params.from === "string") {
+    if (params.from && typeof params.from === 'string') {
       validated.from = params.from;
     }
 
-    if (params.to && typeof params.to === "string") {
+    if (params.to && typeof params.to === 'string') {
       validated.to = params.to;
     }
 
-    if (params.timescale && typeof params.timescale === "string") {
+    if (params.timescale && typeof params.timescale === 'string') {
       validated.timescale = params.timescale;
     }
 
@@ -54,7 +50,7 @@ export class TemperatureValidator {
 
     if (
       params.period !== undefined &&
-      typeof params.period === "number" &&
+      typeof params.period === 'number' &&
       params.period >= 100 &&
       params.period <= 10000
     ) {
@@ -63,7 +59,7 @@ export class TemperatureValidator {
 
     if (
       params.amplitude !== undefined &&
-      typeof params.amplitude === "number" &&
+      typeof params.amplitude === 'number' &&
       params.amplitude >= 0 &&
       params.amplitude <= 50
     ) {
@@ -71,10 +67,10 @@ export class TemperatureValidator {
     }
 
     if (params.status !== undefined) {
-      if (typeof params.status === "boolean") {
+      if (typeof params.status === 'boolean') {
         validParams.status = params.status;
-      } else if (typeof params.status === "string") {
-        validParams.status = params.status === "true";
+      } else if (typeof params.status === 'string') {
+        validParams.status = params.status === 'true';
       }
     }
 
@@ -83,26 +79,26 @@ export class TemperatureValidator {
 
   static validateTimescale(timescale: string): boolean {
     const validTimescales = [
-      "1h",
-      "1hour",
-      "6h",
-      "6hours",
-      "1d",
-      "1day",
-      "7d",
-      "7days",
-      "1w",
-      "1week",
-      "30d",
-      "30days",
-      "1m",
-      "1month",
+      '1h',
+      '1hour',
+      '6h',
+      '6hours',
+      '1d',
+      '1day',
+      '7d',
+      '7days',
+      '1w',
+      '1week',
+      '30d',
+      '30days',
+      '1m',
+      '1month',
     ];
     return validTimescales.includes(timescale.toLowerCase());
   }
 
   static validateAggregation(aggregation: string): boolean {
-    const validAggregations = ["raw", "1min", "5min", "15min", "1hour"];
+    const validAggregations = ['raw', '1min', '5min', '15min', '1hour'];
     return validAggregations.includes(aggregation);
   }
 

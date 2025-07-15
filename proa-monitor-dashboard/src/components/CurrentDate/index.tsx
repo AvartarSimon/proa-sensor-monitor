@@ -6,14 +6,10 @@ export function CurrentDate() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(new Date());
-    }, 1000); 
+    }, 1000);
 
     return () => clearInterval(intervalId);
   }, []);
 
-  return (
-    < >
-      {moment(currentTime).format('DD/MM/YYYY HH:mm:ss')}
-    </>
-  );
+  return <>{moment(currentTime).format('DD/MM/YYYY HH:mm:ss')}</>;
 }

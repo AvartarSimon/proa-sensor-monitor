@@ -152,9 +152,9 @@ export default function Block2() {
       title={
         <div className="block2__title">
           <span>Real-time Humidity</span>
-    
         </div>
-      }>
+      }
+    >
       {content}
       <div className="block2__date">
         {new Date().toLocaleDateString('en-GB', {
@@ -167,7 +167,8 @@ export default function Block2() {
         width={toAdaptedPx(925)}
         open={open}
         onCancel={() => setOpen(false)}
-        title="Real-time Humidity">
+        title="Real-time Humidity"
+      >
         <div className="block2__modal-content">{content}</div>
       </MaximizeModal>
     </PrimaryCard>
@@ -247,8 +248,7 @@ function MiniCard(props: {
   return (
     <div className="mini-card" onClick={onClick}>
       <div className="mini-card__line"></div>
-      <div
-        className={`mini-card__content ${isActive ? 'mini-card__content--active' : ''}`}>
+      <div className={`mini-card__content ${isActive ? 'mini-card__content--active' : ''}`}>
         <div>
           <div className="mini-card__num">{formatNumber(num, 0)}</div>
           <div className="mini-card__unit">{unit}</div>

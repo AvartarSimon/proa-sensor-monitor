@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { isDevelopment } from "../config/app";
+import { Request, Response, NextFunction } from 'express';
+import { isDevelopment } from '../config/app';
 
 export class CustomError extends Error {
   public statusCode: number;
@@ -18,9 +18,9 @@ export const errorHandler = (
   _next: NextFunction,
 ): void => {
   const statusCode = error.statusCode || 500;
-  const message = error.message || "Internal Server Error";
+  const message = error.message || 'Internal Server Error';
 
-  console.error("Error occurred:", {
+  console.error('Error occurred:', {
     message: error.message,
     stack: isDevelopment() ? error.stack : undefined,
     url: req.url,
