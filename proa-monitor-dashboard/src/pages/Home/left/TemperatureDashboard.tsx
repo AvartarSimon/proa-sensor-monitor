@@ -97,16 +97,23 @@ const TemperatureDashboard: React.FC = () => {
 
   useEffect(() => {
     if (stats?.stats?.maxTemperature && stats?.stats?.averageTemperature) {
-      if (stats.stats.maxTemperature > 45 && stats.stats.averageTemperature < 50) {
-        console.log('here');
-        addWarning(
-          'warning',
-          `Warning! The average temperature is over ${stats.stats.maxTemperature}°C, please note!\nThe message has been sent to the owner of the Farm.`,
+      if (stats.stats.maxTemperature > 55 && stats.stats.averageTemperature < 60) {
+        setTimeout(
+          () =>
+            addWarning(
+              'warning',
+              `Warning! The average temperature is over ${stats.stats.maxTemperature}°C, please note!\nThe message has been sent to the owner of the Farm.`,
+            ),
+          5000,
         );
-      } else if (stats.stats.maxTemperature > 50) {
-        addWarning(
-          'error',
-          `The maximum temperature is over ${stats.stats.maxTemperature}°C, please note!\nProa AI System has called the owner of the Farm`,
+      } else if (stats.stats.maxTemperature > 65) {
+        setTimeout(
+          () =>
+            addWarning(
+              'error',
+              `The maximum temperature is over ${stats.stats.maxTemperature}°C, please note!\nProa AI System has called the owner of the Farm`,
+            ),
+          5000,
         );
       }
     }

@@ -13,7 +13,6 @@ const RecentTemperatureChart: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const intervalRef = useRef<number | null>(null);
-
   // Fetch recent temperature data from API
   const fetchRecentTemperatureData = async () => {
     try {

@@ -10,8 +10,6 @@ import RightBlock2 from './right/Block2';
 import RightBlock3 from './right/Block3';
 
 export const Home = () => {
-  console.log('home ess!!!!!!!!!!!');
-  message.success('success!!!!!!!!!!!!!!!');
   return (
     <div className="home">
       <Center />

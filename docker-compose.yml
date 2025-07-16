@@ -42,6 +42,7 @@ services:
     build: ./sensor-management-api
     environment:
       DATABASE_URL: ${DATABASE_URL}
+      MODBUS_SENSOR_CONTROL_URL: ${MODBUS_SENSOR_CONTROL_URL}
     ports:
       - ${SENSOR_MANAGEMENT_API_PORT}:4000
     depends_on:

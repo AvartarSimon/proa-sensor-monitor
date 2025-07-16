@@ -40,9 +40,13 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
   }, []);
   useEffect(() => {
     if (sensorStatus && !sensorStatus?.sensorConnection?.isConnected) {
-      addWarning(
-        'error',
-        'Sensor connection lost. Please check the device or network link.Proa AI System has been notified and will investigate immediately.',
+      setTimeout(
+        () =>
+          addWarning(
+            'error',
+            'Sensor connection lost. Please check the device or network link.Proa AI System has been notified and will investigate immediately.',
+          ),
+        5000,
       );
     }
   }, [sensorStatus]);
