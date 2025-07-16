@@ -2,7 +2,7 @@ import { Pause, Play, RotateCcw, Settings } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import type { SensorControlType, SensorStatus } from '../../../services/sensorDataApi';
 import { sensorDataApi } from '../../../services/sensorDataApi';
-import { useWarnMessage } from '../../../utils/useWarnMessage';
+import { useWarning } from '../../../utils/useWarning';
 interface SensorControlProps {
   className?: string;
 }
@@ -17,8 +17,7 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const { showMessage, contextHolder } = useWarnMessage();
-  // Fetch sensor status on mount and periodically
+  const { addWarning, WarningDisplay } = useWarning();
   useEffect(() => {
     const fetchStatus = async () => {
       try {
@@ -40,15 +39,14 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
     return () => clearInterval(interval);
   }, []);
   useEffect(() => {
-    if (!sensorStatus?.sensorConnection?.isConnected) {
-      showMessage({
-        type: 'error',
-        content:
-          'Sensor is not connected, please check the sensor or the link!\\n(Proa AI System has got the notice,will check the sensor immediately)',
-      });
+    if (sensorStatus && !sensorStatus?.sensorConnection?.isConnected) {
+      addWarning(
+        'error',
+        'Sensor is disconnected, please check the sensor or the link!\\n(Proa AI System has got the notice,will check the sensor immediately)',
+      );
     }
   }, [sensorStatus]);
-  // Handle control changes
+
   const handleControlChange = (field: keyof SensorControlType, value: number | boolean) => {
     setControls((prev) => ({
       ...prev,
@@ -134,7 +132,7 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
       {/* Control Form */}
       <div className="control-form">
         <div className="form-group">
-          {contextHolder}
+          <WarningDisplay />
           <label htmlFor="period">Period (ms):</label>
           <input
             type="range"

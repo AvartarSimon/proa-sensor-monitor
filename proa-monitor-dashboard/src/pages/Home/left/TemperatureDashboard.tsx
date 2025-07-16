@@ -6,9 +6,9 @@ import {
   type TemperatureData,
   type TemperatureStats,
 } from '../../../services/sensorDataApi';
+import '../../../styles/warning.css';
 import { formattedTime } from '../../../utils';
-// import { useWarnMessage } from '../../../utils/useWarnMessage';
-import { message } from 'antd';
+import { useWarning } from '../../../utils/useWarning';
 
 type DataPoint = {
   time: number; // Unix timestamp
@@ -37,8 +37,7 @@ const TemperatureDashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedTimescale, setSelectedTimescale] = useState<string>('1h');
   const intervalRef = useRef<number | null>(null);
-  // const { showMessage, contextHolder } = useWarnMessage();
-  // const [messageApi, contextHolder] = message.useMessage();
+  const { addWarning, WarningDisplay } = useWarning();
   // Fetch temperature data from API
   const fetchTemperatureData = async (timescale: string = '1h') => {
     try {
@@ -90,41 +89,28 @@ const TemperatureDashboard: React.FC = () => {
       fetchTemperatureData(selectedTimescale);
       fetchTemperatureStats(selectedTimescale);
     }, 3000); // 3 seconds
-    message.success('success get !');
     console.log('!!!1 data,stats');
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [selectedTimescale]);
 
-  // useEffect(() => {
-  //   console.log('!!!1 data,stats', stats, stats?.stats?.maxTemperature);
-  //   if (stats?.stats?.maxTemperature > 40 && stats?.stats?.averageTemperature < 50) {
-  //     console.log('here');
-  //     // showMessage({
-  //     //   type: 'warning',
-  //     //   content: `The maximum temperature is over ${stats?.stats?.maxTemperature}0C,please note!\\n Proa AI System has called the owner of the Farm`,
-  //     //   marginTop: '15vh',
-  //     // });
-  //   } else if (stats?.stats?.maxTemperature > 50) {
-  //     const error = () => {
-  //       messageApi.open({
-  //         type: 'error',
-  //         style: {
-  //           marginTop: '10vh',
-  //           zIndex: '100000',
-  //         },
-  //         content: `Warnning!The average temperature is over ${stats?.stats?.maxTemperature}0C,please note!\\n The message has been sent to the owner of the Farm`,
-  //       });
-  //     };
-  //     error();
-  //     // showMessage({
-  //     //   type: 'warning',
-  //     //   content: `Warnning!The average temperature is over ${stats?.stats?.maxTemperature}0C,please note!\\n The message has been sent to the owner of the Farm`,
-  //     //   marginTop: '15vh',
-  //     // });
-  //   }
-  // }, [stats?.stats?.averageTemperature]);
+  useEffect(() => {
+    if (stats?.stats?.maxTemperature && stats?.stats?.averageTemperature) {
+      if (stats.stats.maxTemperature > 45 && stats.stats.averageTemperature < 50) {
+        console.log('here');
+        addWarning(
+          'warning',
+          `The maximum temperature is over ${stats.stats.maxTemperature}°C, please note!\nProa AI System has called the owner of the Farm`,
+        );
+      } else if (stats.stats.maxTemperature > 50) {
+        addWarning(
+          'error',
+          `Warning! The average temperature is over ${stats.stats.maxTemperature}°C, please note!\nThe message has been sent to the owner of the Farm`,
+        );
+      }
+    }
+  }, [stats?.stats?.averageTemperature, addWarning]);
 
   const chartOption: echarts.EChartsOption = {
     title: {
@@ -137,14 +123,11 @@ const TemperatureDashboard: React.FC = () => {
     },
     tooltip: {
       trigger: 'axis',
-      formatter: (params: any) => {
-        console.log('!!!! params', params);
-        const data = params[0]; // only one series: Temperature
+      formatter: (params: unknown) => {
+        const data = (params as Array<{ data: [number, number] }>)[0]; // only one series: Temperature
         const date = new Date(data.data[0]); // x value (timestamp)
         const value = data.data[1]; // y value (temperature)
-        // Format date manually
         const time = formattedTime(date);
-
         return `${time} : ${value} °C`;
       },
     },
@@ -221,7 +204,7 @@ const TemperatureDashboard: React.FC = () => {
 
   return data?.length > 0 ? (
     <div className="temperature-dashboard">
-      {/* {contextHolder} */}
+      <WarningDisplay />
       <div className="dashboard-header">
         <h2>Temperature Dashboard</h2>
         <div className="timescale-selector">
@@ -286,7 +269,7 @@ const TemperatureDashboard: React.FC = () => {
           <div className="stat-card">
             <div className="stat-icon">📊</div>
             <div className="stat-content">
-              <div className="stat-label">Std Dev</div>
+              <div className="stat-label">Std Deviation</div>
               <div className="stat-value">{stats.stats.standardDeviation.toFixed(2)}°C</div>
             </div>
           </div>

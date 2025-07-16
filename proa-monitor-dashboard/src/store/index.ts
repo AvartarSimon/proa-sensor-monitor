@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import leftBlocksDataReducer from './leftBlocksDataSlice';
-
 export const store = configureStore({
   reducer: {
-    leftBlocksData: leftBlocksDataReducer,
+    // leftBlocksData: leftBlocksDataReducer,
   },
 });
 

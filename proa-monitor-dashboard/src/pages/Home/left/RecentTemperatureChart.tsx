@@ -2,7 +2,7 @@ import * as echarts from 'echarts';
 import ReactECharts from 'echarts-for-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { sensorDataApi, type TemperatureData } from '../../../services/sensorDataApi';
-
+import { formattedTime } from '../../../utils';
 type DataPoint = {
   time: number; // Unix timestamp
   value: number;
@@ -60,7 +60,13 @@ const RecentTemperatureChart: React.FC = () => {
     },
     tooltip: {
       trigger: 'axis',
-      formatter: '{b} : {c} °C',
+      formatter: (params: unknown) => {
+        const data = (params as Array<{ data: [number, number] }>)[0]; // only one series: Temperature
+        const date = new Date(data.data[0]); // x value (timestamp)
+        const value = data.data[1]; // y value (temperature)
+        const time = formattedTime(date);
+        return `${time} : ${value} °C`;
+      },
     },
     xAxis: {
       type: 'time',

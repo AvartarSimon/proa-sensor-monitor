@@ -1,121 +1,82 @@
-import { Pause, Play, RotateCcw, Settings } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import type { SensorControlType, SensorStatus } from '../services/api';
-import { api } from '../services/api';
+import React from 'react';
+import { ErrorDisplay } from '../../../components/ErrorDisplay';
+import { LoadingSpinner } from '../../../components/LoadingSpinner';
+import { useSensorControl } from '../../../hooks/useSensorControl';
+import { useWarning } from '../../../utils/useWarning';
+import './SensorControl.css';
 
 interface SensorControlProps {
   className?: string;
 }
 
 const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
-  const [sensorStatus, setSensorStatus] = useState<SensorStatus | null>(null);
-  const [controls, setControls] = useState<SensorControlType>({
-    period: 1000,
-    amplitude: 10,
-    status: true,
-  });
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const {
+    sensorStatus,
+    loading,
+    error,
+    controlLoading,
+    toggleSensor,
+    updatePeriod,
+    updateAmplitude,
+  } = useSensorControl();
 
-  // Fetch sensor status on mount and periodically
-  useEffect(() => {
-    const fetchStatus = async () => {
-      try {
-        const status = await api.getSensorStatus();
-        setSensorStatus(status);
-      } catch (err) {
-        console.error('Error fetching sensor status:', err);
-        setSensorStatus(null);
-        setError('Failed to load sensor status');
-      }
-    };
+  const { addWarning, WarningDisplay } = useWarning();
 
-    fetchStatus();
-    const interval = setInterval(fetchStatus, 5000); // Update every 5 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Handle control changes
-  const handleControlChange = (field: keyof SensorControlType, value: number | boolean) => {
-    setControls((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  // Apply controls to sensor
-  const applyControls = async () => {
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-
-    try {
-      await api.controlSensor(controls);
-      setSuccess('Sensor controls updated successfully');
-    } catch (err) {
-      console.error('Error controlling sensor:', err);
-      setError('Failed to update sensor controls');
-    } finally {
-      setLoading(false);
+  const handlePeriodChange = async (period: number) => {
+    const result = await updatePeriod(period);
+    if (result?.success) {
+      addWarning('success', 'Period updated successfully');
+    } else {
+      addWarning('error', result?.message || 'Failed to update period');
     }
   };
 
-  // Toggle sensor status
-  const toggleSensor = async () => {
-    const newStatus = !controls.status;
-    setControls((prev) => ({ ...prev, status: newStatus }));
-
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-
-    try {
-      await api.controlSensor({ status: newStatus });
-      setSuccess(`Sensor ${newStatus ? 'started' : 'stopped'} successfully`);
-    } catch (err) {
-      console.error('Error toggling sensor:', err);
-      setError('Failed to toggle sensor status');
-    } finally {
-      setLoading(false);
+  const handleAmplitudeChange = async (amplitude: number) => {
+    const result = await updateAmplitude(amplitude);
+    if (result?.success) {
+      addWarning('success', 'Amplitude updated successfully');
+    } else {
+      addWarning('error', result?.message || 'Failed to update amplitude');
     }
   };
 
-  // Reset to default values
-  const resetToDefaults = () => {
-    setControls({
-      period: 1000,
-      amplitude: 10,
-      status: true,
-    });
+  const handleToggleSensor = async () => {
+    const result = await toggleSensor();
+    if (result?.success) {
+      addWarning('success', `Sensor ${sensorStatus?.running ? 'stopped' : 'started'} successfully`);
+    } else {
+      addWarning('error', result?.message || 'Failed to toggle sensor');
+    }
   };
+
+  if (loading) {
+    return <LoadingSpinner message="Loading sensor status..." />;
+  }
+
+  if (error) {
+    return (
+      <ErrorDisplay 
+        error={error} 
+        title="Sensor Control Error"
+      />
+    );
+  }
+
+  if (!sensorStatus) {
+    return <div className="no-sensor-data">No sensor data available</div>;
+  }
 
   return (
     <div className={`sensor-control ${className}`}>
+      <WarningDisplay />
+      
       <div className="control-header">
-        <Settings className="control-icon" />
+        <div className="control-icon">⚙️</div>
         <h3>Sensor Control</h3>
-
-        <div className={`status-indicator ${sensorStatus.sensor.status}`}>
-          {sensorStatus.sensor.status === 'connected' ? 'Connected' : 'Disconnected'}
+        <div className={`status-indicator ${sensorStatus.sensorConnection.isConnected ? 'connected' : 'disconnected'}`}>
+          {sensorStatus.sensorConnection.isConnected ? 'Connected' : 'Disconnected'}
         </div>
       </div>
-
-      {/* Error/Success Messages */}
-      {error && (
-        <div className="error-message">
-          <p>{error}</p>
-          <button onClick={() => setError(null)}>Dismiss</button>
-        </div>
-      )}
-
-      {success && (
-        <div className="success-message">
-          <p>{success}</p>
-          <button onClick={() => setSuccess(null)}>Dismiss</button>
-        </div>
-      )}
 
       {/* Control Form */}
       <div className="control-form">
@@ -127,11 +88,11 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
             min="100"
             max="10000"
             step="100"
-            value={controls.period}
-            onChange={(e) => handleControlChange('period', parseInt(e.target.value))}
-            disabled={loading}
+            value={sensorStatus.period}
+            onChange={(e) => handlePeriodChange(parseInt(e.target.value))}
+            disabled={controlLoading}
           />
-          <span className="value-display">{controls.period}ms</span>
+          <span className="value-display">{sensorStatus.period}ms</span>
         </div>
 
         <div className="form-group">
@@ -142,11 +103,11 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
             min="0"
             max="50"
             step="1"
-            value={controls.amplitude}
-            onChange={(e) => handleControlChange('amplitude', parseInt(e.target.value))}
-            disabled={loading}
+            value={sensorStatus.amplitude}
+            onChange={(e) => handleAmplitudeChange(parseInt(e.target.value))}
+            disabled={controlLoading}
           />
-          <span className="value-display">{controls.amplitude}°C</span>
+          <span className="value-display">{sensorStatus.amplitude}°C</span>
         </div>
 
         <div className="form-group">
@@ -154,39 +115,28 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
           <div className="status-controls">
             <button
               type="button"
-              className={`status-btn ${controls.status ? 'active' : ''}`}
-              onClick={toggleSensor}
-              disabled={loading}
+              className={`status-btn ${sensorStatus.running ? 'active' : ''}`}
+              onClick={handleToggleSensor}
+              disabled={controlLoading}
             >
-              {controls.status ? <Play size={16} /> : <Pause size={16} />}
-              {controls.status ? 'Running' : 'Stopped'}
+              {sensorStatus.running ? '⏸️' : '▶️'}
+              {sensorStatus.running ? 'Running' : 'Stopped'}
             </button>
           </div>
-        </div>
-
-        <div className="form-actions">
-          <button type="button" className="apply-btn" onClick={applyControls} disabled={loading}>
-            {loading ? 'Applying...' : 'Apply Changes'}
-          </button>
-
-          <button type="button" className="reset-btn" onClick={resetToDefaults} disabled={loading}>
-            <RotateCcw size={16} />
-            Reset
-          </button>
         </div>
       </div>
 
       {/* Connection Info */}
-      {sensorStatus && sensorStatus.sensor.lastFailureTime && (
+      {sensorStatus.sensorConnection.lastFailureTime && (
         <div className="connection-info">
           <h4>Connection Information</h4>
           <p>
             <strong>Last Failure:</strong>{' '}
-            {new Date(sensorStatus.sensor.lastFailureTime).toLocaleString()}
+            {new Date(sensorStatus.sensorConnection.lastFailureTime).toLocaleString()}
           </p>
-          {sensorStatus.sensor.lastFailureMessage && (
+          {sensorStatus.sensorConnection.lastFailureMessage && (
             <p>
-              <strong>Error:</strong> {sensorStatus.sensor.lastFailureMessage}
+              <strong>Error:</strong> {sensorStatus.sensorConnection.lastFailureMessage}
             </p>
           )}
         </div>

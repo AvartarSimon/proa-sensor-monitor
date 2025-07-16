@@ -1,116 +1,100 @@
-.block1 {
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 8px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
+.temperature-dashboard {
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  min-height: 100%;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.chart-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.data-summary {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.data-summary h3 {
+  margin: 0 0 16px 0;
+  color: #1e293b;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.summary-item {
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.summary-item strong {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background: white;
+  border-radius: 12px;
+  color: #64748b;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-header {
     flex-direction: column;
-}
-
-.block1__content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    flex: 1;
-}
-
-.block1__chart-container {
-    flex: 1;
-    display: flex;
-    position: relative;
-    min-height: 0;
-    padding: 20px;
-}
-
-.block1__chart {
-    flex: 1;
-    position: relative;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 300px;
-    /* 设置固定高度 */
-}
-
-.block1__unit-controls {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    display: flex;
-    flex-direction: row;
-    /* 改为水平排列 */
-    gap: 8px;
-    z-index: 10;
-}
-
-.block1__unit-btn {
-    padding: 8px 12px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
-    min-width: 40px;
-    text-align: center;
-}
-
-.block1__unit-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-.block1__unit-btn--active {
-    background: rgba(78, 205, 196, 0.3);
-    border-color: #4ECDC4;
-    color: #4ECDC4;
-}
-
-.block1__controls {
-    padding: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    flex-shrink: 0;
-}
-
-.block1__action-controls {
-    display: flex;
-    justify-content: center;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
-}
-
-.block1__btn {
-    padding: 8px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
-}
-
-.block1__btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-.block1__btn--active {
-    background: rgba(255, 107, 107, 0.3);
-    border-color: #FF6B6B;
-    color: #FF6B6B;
-}
-
-.block1__loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: white;
-    font-size: 16px;
+  }
+  
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
 }

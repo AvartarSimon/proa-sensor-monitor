@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
-import { TemperatureProvider } from './contexts/TemperatureContext';
 import { store } from './store';
 
 // rewrite the transition data
@@ -23,9 +22,7 @@ root.render(
   <Provider store={store}>
     <ConfigProvider locale={en_GB}>
       <ErrorBoundary>
-        <TemperatureProvider>
           <App />
-        </TemperatureProvider>
       </ErrorBoundary>
     </ConfigProvider>
   </Provider>,
