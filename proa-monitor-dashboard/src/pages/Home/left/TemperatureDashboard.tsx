@@ -101,12 +101,12 @@ const TemperatureDashboard: React.FC = () => {
         console.log('here');
         addWarning(
           'warning',
-          `The maximum temperature is over ${stats.stats.maxTemperature}°C, please note!\nProa AI System has called the owner of the Farm`,
+          `Warning! The average temperature is over ${stats.stats.maxTemperature}°C, please note!\nThe message has been sent to the owner of the Farm.`,
         );
       } else if (stats.stats.maxTemperature > 50) {
         addWarning(
           'error',
-          `Warning! The average temperature is over ${stats.stats.maxTemperature}°C, please note!\nThe message has been sent to the owner of the Farm`,
+          `The maximum temperature is over ${stats.stats.maxTemperature}°C, please note!\nProa AI System has called the owner of the Farm`,
         );
       }
     }

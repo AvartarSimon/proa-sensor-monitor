@@ -42,7 +42,7 @@ const SensorControl: React.FC<SensorControlProps> = ({ className }) => {
     if (sensorStatus && !sensorStatus?.sensorConnection?.isConnected) {
       addWarning(
         'error',
-        'Sensor is disconnected, please check the sensor or the link!\\n(Proa AI System has got the notice,will check the sensor immediately)',
+        'Sensor connection lost. Please check the device or network link.Proa AI System has been notified and will investigate immediately.',
       );
     }
   }, [sensorStatus]);
