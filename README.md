@@ -101,7 +101,7 @@ The schema should be automatically loaded via Docker Compose. If not, run the SQ
 | Modbus Sensor Simulator   | docker-compose up    | npm run start                 | 5020   |
 | Sensor Data Collector     | docker-compose up    | npm run start                 | 4001   |
 | Sensor Management API     | docker-compose up    | npm run start                 | 4000   |
-| sensor-management-api     | docker-compose up    | npm run dev                   | 3000   |
+| Proa Monitor Dashboard    | docker-compose up    | npm run dev                   | 3000   |
 
 ---
 
